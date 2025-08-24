@@ -1,0 +1,102 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# DocuChat specific
+chroma/
+*.sqlite3
+*.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+
+# Configuration
+.env
+.env.local
+.env.production
+
+# Testing
+.coverage
+.pytest_cache/
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+.hypothesis/
+
+# Documentation builds
+docs/_build/
+.readthedocs.yml
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# Model files (optional - users may want to gitignore large models)
+*.bin
+*.safetensors
+models/
+
+# User data
+user_data/
+documents/
+my_documents/
+
+# Gradio temporary files
+gradio_cached_examples/
+flagged/
+
+# Deployment
+docker-compose.override.yml
+.dockerignore.bak

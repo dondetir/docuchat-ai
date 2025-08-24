@@ -1,0 +1,21 @@
+# Phase 1 dependencies (existing)
+pypdf==6.0.0
+python-docx==1.2.0
+
+# Phase 2 dependencies (SECURE VERSIONS - Critical vulnerabilities patched)
+torch>=2.6.0  # CVE-2025-32434, CVE-2024-31580 patched
+transformers>=4.36.0  # CVE-2024-11392/93/94 patched
+sentence-transformers>=2.3.0  # Updated with secure transformers
+chromadb>=0.4.18  # Latest stable with security fixes
+numpy>=1.26.0  # Updated for compatibility
+safetensors>=0.4.0  # Secure tensor serialization
+
+# Phase 3 dependencies (LLM integration)
+requests>=2.31.0  # HTTP client for Ollama API integration
+
+# Web Interface dependencies
+gradio>=4.0.0  # Modern web interface framework
+
+# Security and development dependencies
+safety>=3.0.0  # Vulnerability scanning
+bandit>=1.7.5  # Static security analysis
