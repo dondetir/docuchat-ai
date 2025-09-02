@@ -210,6 +210,7 @@ class RecursiveCharacterTextSplitter:
     def _merge_splits(self, splits: List[str], separator: str) -> List[str]:
         """
         Merge small splits into larger chunks while respecting size limits.
+        Enhanced to prefer sentence boundaries for cleaner chunks.
         
         Args:
             splits: List of text splits
@@ -233,9 +234,18 @@ class RecursiveCharacterTextSplitter:
                 # Add to current chunk
                 current_chunk += split
             else:
-                # Current chunk is full, start new one
+                # Current chunk would exceed limit
                 if current_chunk and len(current_chunk.strip()) >= self.min_chunk_size:
-                    chunks.append(current_chunk)
+                    # For sentence-based separators, try to end at natural boundaries
+                    if separator in [". ", "? ", "! "]:
+                        # We're already at a sentence boundary - perfect place to split
+                        chunks.append(current_chunk)
+                    elif current_chunk.strip():
+                        # Try to find last sentence boundary in current chunk
+                        optimized_chunk = self._optimize_chunk_boundary(current_chunk)
+                        chunks.append(optimized_chunk)
+                    else:
+                        chunks.append(current_chunk)
                 
                 # Handle oversized splits
                 if self.length_function(split) > self.max_chunk_size:
@@ -249,6 +259,30 @@ class RecursiveCharacterTextSplitter:
             chunks.append(current_chunk)
         
         return chunks
+    
+    def _optimize_chunk_boundary(self, chunk: str) -> str:
+        """
+        Try to end chunk at the best sentence boundary within the text.
+        
+        Args:
+            chunk: Text chunk to optimize
+            
+        Returns:
+            Optimized chunk ending at sentence boundary if possible
+        """
+        # Find the last sentence-ending punctuation
+        sentence_ends = [". ", "? ", "! "]
+        best_pos = -1
+        
+        for end_punct in sentence_ends:
+            pos = chunk.rfind(end_punct)
+            if pos > best_pos and pos > len(chunk) * 0.5:  # Don't cut too early
+                best_pos = pos + len(end_punct)
+        
+        if best_pos > 0 and best_pos < len(chunk):
+            return chunk[:best_pos].strip()
+        
+        return chunk
     
     def _recursive_split(self, text: str, separators: List[str]) -> List[str]:
         """

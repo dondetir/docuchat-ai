@@ -129,6 +129,10 @@ def run_document_processing(args) -> int:
         
         # Initialize all components (with quiet mode for most)
         loader = DocumentLoader(verbose=False)  # We'll manage progress ourselves
+        
+        # Display chunk size information
+        print(args.get_chunk_size_info())
+        
         chunker = DocumentChunker(
             chunk_size=args.chunk_size,
             chunk_overlap=200,  # Standard overlap
@@ -335,6 +339,9 @@ def run_interactive_mode(args) -> int:
         if args.verbose:
             print("🔄 Initializing RAG pipeline components...")
         
+        # Display chunk size information (even in non-verbose mode for chat)
+        print(args.get_chunk_size_info())
+        
         embedding_generator = EmbeddingGenerator(
             model_name=args.embedding_model,
             batch_size=32,
@@ -350,16 +357,16 @@ def run_interactive_mode(args) -> int:
         
         llm_client = LLMClient(
             base_url="http://localhost:11434",
-            model="gemma3:270m",
-            timeout=60.0,
+            model=args.llm,
+            timeout=args.get_timeout_seconds(),
             verbose=args.verbose
         )
         
         # Test LLM availability
         if not llm_client.is_available():
-            print("❌ LLM service not available. Please ensure Ollama is running with gemma3:270m model.")
+            print(f"❌ LLM service not available. Please ensure Ollama is running with {args.llm} model.")
             print("   Start Ollama: ollama serve")
-            print("   Pull model: ollama pull gemma3:270m")
+            print(f"   Pull model: ollama pull {args.llm}")
             return 1
         
         # Check if database has content

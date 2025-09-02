@@ -147,7 +147,7 @@ class SecureLLMClient:
     """
     
     DEFAULT_BASE_URL = "http://localhost:11434"
-    DEFAULT_MODEL = "gemma3:270m"
+    DEFAULT_MODEL = "gemma3:1b"
     DEFAULT_TIMEOUT = 60.0
     MAX_RETRIES = 3
     

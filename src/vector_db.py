@@ -496,12 +496,15 @@ class ChromaDBVectorStore:
             
             if results and 'ids' in results and results['ids'][0]:
                 for i in range(len(results['ids'][0])):
+                    distance = results['distances'][0][i] if 'distances' in results else None
                     doc_data = {
                         'id': results['ids'][0][i],
-                        'distance': results['distances'][0][i] if 'distances' in results else None,
+                        'distance': distance,
                         'content': results['documents'][0][i] if 'documents' in results else None,
                         'metadata': results['metadatas'][0][i] if 'metadatas' in results else {}
                     }
+                    # Debug: Log actual distance values to understand range
+                    self._log(f"ChromaDB returned distance: {distance:.6f} for doc {i}", "debug")
                     similar_docs.append(doc_data)
             
             # Update statistics

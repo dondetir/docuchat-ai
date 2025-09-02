@@ -188,21 +188,26 @@ class SecureEmbeddingModel:
     
     # Known secure model hashes (would be updated with actual hashes in production)
     KNOWN_MODEL_HASHES = {
+        "BAAI/bge-m3": {
+            "expected_dim": 1024,
+            "max_input_length": 8192,  # 8K context window - GAME CHANGER
+            "verified": True
+        },
         "all-MiniLM-L6-v2": {
             "expected_dim": 384,
-            "max_input_length": 512,
+            "max_input_length": 256,  # Optimal performance limit (trained on 128, optimal at 256)
             "verified": True
         },
         "all-mpnet-base-v2": {
             "expected_dim": 768,
-            "max_input_length": 512,
+            "max_input_length": 384,  # Recommended maximum (trained on 128, optimal up to 384)
             "verified": True
         }
     }
     
     def __init__(
         self,
-        model_name: str = "all-MiniLM-L6-v2",
+        model_name: str = "BAAI/bge-m3",
         cache_dir: Optional[str] = None,
         trust_remote_code: bool = False,
         device: Optional[str] = None,
@@ -252,8 +257,8 @@ class SecureEmbeddingModel:
         if not self.model_name.strip():
             raise ValueError("Model name cannot be empty")
         
-        # Security: Prevent path traversal in model names
-        if ".." in self.model_name or "/" in self.model_name or "\\" in self.model_name:
+        # Security: Prevent path traversal in model names, but allow org/model format
+        if ".." in self.model_name or "\\" in self.model_name or self.model_name.count("/") > 1:
             raise ValueError("Model name contains unsafe characters")
         
         # Check if model is in known safe list
@@ -520,7 +525,7 @@ class EmbeddingGenerator:
     
     def __init__(
         self,
-        model_name: str = "all-MiniLM-L6-v2",
+        model_name: str = "BAAI/bge-m3",
         batch_size: int = 32,
         cache_dir: Optional[str] = None,
         verbose: bool = False,

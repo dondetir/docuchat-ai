@@ -192,6 +192,29 @@ export GRADIO_SERVER_PORT=7860
 
 ---
 
+## 🎯 Model Selection Best Practices
+
+### Quick Reference vs. Detailed Analysis
+
+**For Quick Q&A Sessions:**
+- Use lightweight models (<1B parameters) like `gemma3:270m` 
+- Provides fast, concise responses ideal for simple queries
+- Lower resource requirements with acceptable accuracy for straightforward questions
+
+**For In-Depth Analysis:**
+- Use larger models (1B+ parameters) such as `llama3.1:8b` or `mistral:7b`
+- Delivers more comprehensive, nuanced responses
+- Better reasoning capabilities for complex document analysis
+
+### Important Considerations
+- **Response quality depends entirely on the chosen LLM** - larger models generally provide more detailed and accurate responses
+- **Verify model context window** - ensure your chosen model supports the required context length for your document chunks
+- **Cross-reference with Ollama documentation** for optimal model configurations and system requirements
+
+*💡 Pro Tip: Start with `gemma3:270m` for initial testing, then scale up to larger models based on your accuracy and detail requirements.*
+
+---
+
 ## 🛠️ Troubleshooting
 
 ### Common Issues & Solutions
